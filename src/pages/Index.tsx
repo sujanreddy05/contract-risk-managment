@@ -4,22 +4,23 @@ import Footer from '@/components/Footer';
 import UploadForm from '@/components/UploadForm';
 import ResultsTable from '@/components/ResultsTable';
 import LanguageToggle from '@/components/LanguageToggle';
+import { getTranslation, Language } from '@/utils/translations';
 
 const Index = () => {
   const [analysisResults, setAnalysisResults] = useState(null);
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
 
   const handleAnalysisComplete = (data: any) => {
     setAnalysisResults(data);
   };
 
   const handleLanguageToggle = (language: string) => {
-    setCurrentLanguage(language);
+    setCurrentLanguage(language as Language);
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
+      <Header language={currentLanguage} />
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
@@ -36,27 +37,25 @@ const Index = () => {
             <div className="space-y-8">
               <div className="text-center">
                 <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Upload Your Contract for Analysis
+                  {getTranslation(currentLanguage, 'uploadTitle')}
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Our AI-powered system will analyze your contract, identify potential
-                  risks, and provide actionable insights to help you make informed
-                  decisions.
+                  {getTranslation(currentLanguage, 'uploadDescription')}
                 </p>
               </div>
-              <UploadForm onAnalysisComplete={handleAnalysisComplete} />
+              <UploadForm onAnalysisComplete={handleAnalysisComplete} language={currentLanguage} />
             </div>
           ) : (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-foreground">
-                  Contract Analysis Results
+                  {getTranslation(currentLanguage, 'resultsTitle')}
                 </h2>
                 <button
                   onClick={() => setAnalysisResults(null)}
                   className="text-primary hover:underline transition-base"
                 >
-                  Analyze Another Contract
+                  {getTranslation(currentLanguage, 'analyzeAnother')}
                 </button>
               </div>
               <ResultsTable
@@ -68,7 +67,7 @@ const Index = () => {
         </div>
       </main>
 
-      <Footer />
+      <Footer language={currentLanguage} />
     </div>
   );
 };

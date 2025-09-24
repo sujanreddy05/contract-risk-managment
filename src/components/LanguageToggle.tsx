@@ -9,8 +9,7 @@ interface LanguageToggleProps {
 const LanguageToggle = ({ currentLanguage, onToggle }: LanguageToggleProps) => {
   const languages = [
     { code: 'en', label: 'English' },
-    { code: 'es', label: 'Español' },
-    { code: 'fr', label: 'Français' },
+    { code: 'hi', label: 'हिन्दी' },
   ];
 
   return (

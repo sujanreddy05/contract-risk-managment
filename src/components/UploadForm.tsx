@@ -5,12 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Upload, FileText, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getTranslation, Language } from "@/utils/translations";
 
 interface UploadFormProps {
   onAnalysisComplete: (data: any) => void;
+  language: Language;
 }
 
-const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
+const UploadForm = ({ onAnalysisComplete, language }: UploadFormProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -21,7 +23,7 @@ const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
     if (file) {
       setUploadedFile(file);
       toast({
-        title: "File uploaded successfully",
+        title: getTranslation(language, 'dragDropText'),
         description: `${file.name} is ready for analysis.`,
       });
     }
@@ -150,13 +152,13 @@ const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
               ) : (
                 <div className="space-y-2">
                   <h3 className="text-lg font-semibold text-foreground">
-                    {isDragActive ? "Drop your contract here" : "Upload Contract Document"}
+                    {isDragActive ? getTranslation(language, 'dragDropText') : "Upload Contract Document"}
                   </h3>
                   <p className="text-muted-foreground">
-                    Drag and drop your contract file here, or click to browse
+                    {getTranslation(language, 'dragDropText')}, {getTranslation(language, 'orText')} {getTranslation(language, 'browseFiles')}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Supports PDF, DOC, DOCX, TXT (Max 10MB)
+                    {getTranslation(language, 'supportedFormats')}
                   </p>
                 </div>
               )}
@@ -166,7 +168,7 @@ const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
           {isUploading && (
             <div className="mt-6 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Analyzing contract...</span>
+                <span className="text-muted-foreground">{getTranslation(language, 'analyzing')}</span>
                 <span className="text-foreground font-medium">{uploadProgress}%</span>
               </div>
               <Progress value={uploadProgress} className="h-2" />
@@ -181,7 +183,7 @@ const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
                 className="px-8"
               >
                 <FileText className="w-5 h-5 mr-2" />
-                Analyze Contract
+                {getTranslation(language, 'analyzeContract')}
               </Button>
             </div>
           )}
@@ -195,22 +197,22 @@ const UploadForm = ({ onAnalysisComplete }: UploadFormProps) => {
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle className="w-5 h-5 text-primary" />
               </div>
-              <h4 className="font-semibold text-foreground">Secure Analysis</h4>
-              <p className="text-sm text-muted-foreground">Your documents are processed securely and confidentially</p>
+              <h4 className="font-semibold text-foreground">{getTranslation(language, 'secureAnalysis')}</h4>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, 'secureAnalysisDesc')}</p>
             </div>
             <div className="space-y-2">
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <AlertCircle className="w-5 h-5 text-primary" />
               </div>
-              <h4 className="font-semibold text-foreground">Risk Detection</h4>
-              <p className="text-sm text-muted-foreground">AI identifies potential risks and problematic clauses</p>
+              <h4 className="font-semibold text-foreground">{getTranslation(language, 'riskDetection')}</h4>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, 'riskDetectionDesc')}</p>
             </div>
             <div className="space-y-2">
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <FileText className="w-5 h-5 text-primary" />
               </div>
-              <h4 className="font-semibold text-foreground">Detailed Reports</h4>
-              <p className="text-sm text-muted-foreground">Get comprehensive analysis with actionable recommendations</p>
+              <h4 className="font-semibold text-foreground">{getTranslation(language, 'detailedReports')}</h4>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, 'detailedReportsDesc')}</p>
             </div>
           </div>
         </CardContent>

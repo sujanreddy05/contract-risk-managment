@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertTriangle, CheckCircle, XCircle, Download, Share2 } from "lucide-react";
+import { getTranslation, Language } from "@/utils/translations";
 
 interface Issue {
   type: string;
@@ -27,7 +28,7 @@ interface ResultsProps {
     issues: Issue[];
     keyTerms: KeyTerms;
   };
-  language: string;
+  language: Language;
 }
 
 const ResultsTable = ({ results, language }: ResultsProps) => {
@@ -70,11 +71,11 @@ const ResultsTable = ({ results, language }: ResultsProps) => {
         <div className="flex space-x-2">
           <Button variant="outline" size="sm">
             <Download className="w-4 h-4 mr-2" />
-            Export Report
+            {getTranslation(language, 'export')}
           </Button>
           <Button variant="outline" size="sm">
             <Share2 className="w-4 h-4 mr-2" />
-            Share
+            {getTranslation(language, 'share')}
           </Button>
         </div>
       </div>
@@ -87,7 +88,7 @@ const ResultsTable = ({ results, language }: ResultsProps) => {
               <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                 {getRiskIcon(results.overallRisk)}
               </div>
-              <span>Overall Risk Assessment</span>
+              <span>{getTranslation(language, 'overallRisk')}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -95,12 +96,12 @@ const ResultsTable = ({ results, language }: ResultsProps) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Risk Level</span>
                 <Badge className={getRiskColor(results.overallRisk)}>
-                  {results.overallRisk}
+                  {getTranslation(language, results.overallRisk.toLowerCase() as 'low' | 'medium' | 'high')}
                 </Badge>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Risk Score</span>
+                  <span className="text-muted-foreground">{getTranslation(language, 'riskScore')}</span>
                   <span className="font-medium">{results.riskScore}/100</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
@@ -116,24 +117,24 @@ const ResultsTable = ({ results, language }: ResultsProps) => {
 
         <Card className="shadow-card">
           <CardHeader>
-            <CardTitle>Key Contract Terms</CardTitle>
+            <CardTitle>{getTranslation(language, 'keyTerms')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Contract Value</span>
+                <span className="text-sm text-muted-foreground">{getTranslation(language, 'contractValue')}</span>
                 <span className="font-medium">{results.keyTerms.contractValue}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Duration</span>
+                <span className="text-sm text-muted-foreground">{getTranslation(language, 'duration')}</span>
                 <span className="font-medium">{results.keyTerms.duration}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Termination Notice</span>
+                <span className="text-sm text-muted-foreground">{getTranslation(language, 'terminationNotice')}</span>
                 <span className="font-medium">{results.keyTerms.terminationNotice}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Governing Law</span>
+                <span className="text-sm text-muted-foreground">{getTranslation(language, 'governingLaw')}</span>
                 <span className="font-medium">{results.keyTerms.governingLaw}</span>
               </div>
             </div>
@@ -144,16 +145,16 @@ const ResultsTable = ({ results, language }: ResultsProps) => {
       {/* Issues Table */}
       <Card className="shadow-card">
         <CardHeader>
-          <CardTitle>Identified Issues & Recommendations</CardTitle>
+          <CardTitle>{getTranslation(language, 'identifiedIssues')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Risk Level</TableHead>
-                <TableHead>Issue Description</TableHead>
-                <TableHead>Section</TableHead>
-                <TableHead>Recommendation</TableHead>
+                <TableHead>{getTranslation(language, 'type')}</TableHead>
+                <TableHead>{getTranslation(language, 'description')}</TableHead>
+                <TableHead>{getTranslation(language, 'section')}</TableHead>
+                <TableHead>{getTranslation(language, 'recommendation')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

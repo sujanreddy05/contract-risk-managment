@@ -1,6 +1,11 @@
 import { FileCheck, Shield } from "lucide-react";
+import { getTranslation, Language } from "@/utils/translations";
 
-const Header = () => {
+interface HeaderProps {
+  language: Language;
+}
+
+const Header = ({ language }: HeaderProps) => {
   return (
     <header className="bg-card border-b border-border shadow-card">
       <div className="container mx-auto px-4 py-4">
@@ -10,14 +15,14 @@ const Header = () => {
               <FileCheck className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">ContractAnalyzer</h1>
-              <p className="text-sm text-muted-foreground">AI-Powered Contract Review</p>
+              <h1 className="text-xl font-bold text-foreground">{getTranslation(language, 'appTitle')}</h1>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, 'appSubtitle')}</p>
             </div>
           </div>
           
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <Shield className="w-4 h-4" />
-            <span>Secure & Confidential</span>
+            <span>{getTranslation(language, 'secureConfidential')}</span>
           </div>
         </div>
       </div>
