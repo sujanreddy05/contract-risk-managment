@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Upload, FileText, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getTranslation, Language } from "@/utils/translations";
+import { ContractAnalyzer, extractTextFromFile } from "@/utils/contractAnalyzer";
 
 interface UploadFormProps {
   onAnalysisComplete: (data: any) => void;
@@ -50,66 +51,38 @@ const UploadForm = ({ onAnalysisComplete, language }: UploadFormProps) => {
     // Simulate upload progress
     const progressInterval = setInterval(() => {
       setUploadProgress((prev) => {
-        if (prev >= 90) {
+        if (prev >= 80) {
           clearInterval(progressInterval);
-          return 90;
+          return 80;
         }
         return prev + 10;
       });
-    }, 200);
+    }, 300);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Extract text from uploaded file
+      const contractText = await extractTextFromFile(uploadedFile);
+      
+      // Initialize contract analyzer
+      const analyzer = new ContractAnalyzer(contractText, language);
+      
+      // Perform analysis
+      const analysisResults = await analyzer.analyze(uploadedFile.name);
       
       setUploadProgress(100);
-      
-      // Mock analysis results
-      const mockResults = {
-        fileName: uploadedFile.name,
-        analysisDate: new Date().toISOString(),
-        overallRisk: "Medium",
-        riskScore: 65,
-        issues: [
-          {
-            type: "High Risk",
-            description: "Unlimited liability clause detected",
-            section: "Section 7.2",
-            recommendation: "Consider adding liability caps"
-          },
-          {
-            type: "Medium Risk", 
-            description: "Ambiguous termination conditions",
-            section: "Section 12.1",
-            recommendation: "Clarify termination procedures"
-          },
-          {
-            type: "Low Risk",
-            description: "Standard payment terms",
-            section: "Section 4.1",
-            recommendation: "Terms are acceptable"
-          }
-        ],
-        keyTerms: {
-          contractValue: "$150,000",
-          duration: "24 months",
-          terminationNotice: "30 days",
-          governingLaw: "New York"
-        }
-      };
 
       setTimeout(() => {
-        onAnalysisComplete(mockResults);
+        onAnalysisComplete(analysisResults);
         toast({
-          title: "Analysis completed",
-          description: "Your contract has been successfully analyzed.",
+          title: getTranslation(language, "analysisCompleted"),
+          description: getTranslation(language, "analysisCompletedDesc"),
         });
       }, 500);
 
     } catch (error) {
       toast({
-        title: "Analysis failed",
-        description: "Please try again or contact support.",
+        title: getTranslation(language, "analysisFailed"),
+        description: getTranslation(language, "analysisFailedDesc"),
         variant: "destructive",
       });
     } finally {
